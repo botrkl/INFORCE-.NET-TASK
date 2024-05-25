@@ -12,10 +12,12 @@ namespace URLShortener.DAL.Repositories.Classes
         {
             _dbContext = dbContext;
         }
-        public async Task AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
+
+            return entity;
         }
         public async Task DeleteAsync(Guid id)
         {

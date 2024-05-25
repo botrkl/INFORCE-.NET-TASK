@@ -1,8 +1,12 @@
 using URLShortener.DAL.Extensions;
+using URLShortener.BLL.Extensions;
+using URLShortener.API.WebMapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(UserDtoMapperProfile));
 builder.Services.InjectDAL(builder.Configuration);
+builder.Services.InjectBLL();
 
 builder.Services.AddControllers();
 
