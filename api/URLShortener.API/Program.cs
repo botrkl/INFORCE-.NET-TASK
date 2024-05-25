@@ -1,4 +1,8 @@
+using URLShortener.DAL.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.InjectDAL(builder.Configuration);
 
 builder.Services.AddControllers();
 
