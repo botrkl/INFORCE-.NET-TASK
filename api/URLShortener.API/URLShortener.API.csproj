@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\URLShortener.BLL\URLShortener.BLL.csproj" />
     <ProjectReference Include="..\URLShortener.DAL\URLShortener.DAL.csproj" />
   </ItemGroup>
