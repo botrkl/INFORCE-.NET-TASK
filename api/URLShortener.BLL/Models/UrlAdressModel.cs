@@ -6,6 +6,6 @@
         public string OriginalUrl { get; set; }
         public string ShortenedUrl { get; set; }
         public DateTime CreatedDate { get; set; }
-        public virtual Guid UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }
