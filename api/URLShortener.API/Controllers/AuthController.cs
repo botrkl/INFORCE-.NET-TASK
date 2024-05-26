@@ -26,7 +26,10 @@ namespace URLShortener.API.Controllers
                 return BadRequest(ModelState);
             }
             var token = await _authService.AuthenticateAsync(loginDto.Username, loginDto.Password);
-            return Ok();
+            return Ok(Results.Json(new
+            {
+                token = token,
+            }));
         }
 
         [HttpPost("register")]
@@ -38,7 +41,11 @@ namespace URLShortener.API.Controllers
             }
             var addUserModel = _mapper.Map<AddUserModel>(registerDto);
             var token = await _authService.RegisterAsync(addUserModel);
-            return Ok();
+            return Ok(Results.Json(new
+            {
+                token = token,
+            }));
+
         }
     }
 }
