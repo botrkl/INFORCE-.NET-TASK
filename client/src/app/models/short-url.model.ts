@@ -1,6 +1,6 @@
 export interface ShortUrl {
     id: string;
     originalUrl: string;
-    shortUrl: string;
+    shortenedUrl: string;
     canBeDeleted: boolean;
   }

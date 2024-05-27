@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using URLShortener.DAL.DbDataGenerators;
 using URLShortener.DAL.Entities;
 using URLShortener.DAL.EntitiesConfiguration;
 
@@ -15,6 +16,11 @@ namespace URLShortener.DAL.Context
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UrlAdressConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+
+            UserDataGenerator.Generate(modelBuilder);
+            UrlAdressDataGenerator.Generate(modelBuilder);
         }
     }
 }

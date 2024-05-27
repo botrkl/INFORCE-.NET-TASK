@@ -11,7 +11,7 @@
         <input type="hidden" [value]="shortUrl.id">
         {{ shortUrl.originalUrl }}
       </td>
-      <td>{{ shortUrl.shortUrl }}</td>
+      <td>{{ shortUrl.shortenedUrl }}</td>
       <td>
         <button *ngIf="shortUrl.canBeDeleted" (click)="deleteShortUrl(shortUrl.id)">Delete</button>
       </td>
