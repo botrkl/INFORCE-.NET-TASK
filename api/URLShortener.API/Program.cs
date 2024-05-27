@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using URLShortener.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,7 @@ app.UseCors(builder =>
            .AllowAnyHeader()
            .AllowAnyMethod();
 });
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();
