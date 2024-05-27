@@ -16,7 +16,8 @@ namespace URLShortener.BLL.Services.Classes
         {
             _configuration = configuration;
         }
-        public async Task<string> GenerateToken(UserModel userModel)
+
+        public string GenerateToken(UserModel userModel)
         {
             var claims = new List<Claim>
             {
@@ -36,6 +37,73 @@ namespace URLShortener.BLL.Services.Classes
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public Guid GetUserIdFromJwtToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                if (validatedToken is JwtSecurityToken jwtToken)
+                {
+                    var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "UserId");
+
+                    if (userIdClaim != null)
+                    {
+                        return Guid.Parse(userIdClaim.Value);
+                    }
+                }
+
+                throw new ArgumentException("Invalid token: UserId claim is missing or invalid");
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Token validation failed: " + ex.Message);
+            }
+        }
+        public bool CheckUserIsAdmin(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                if (validatedToken is JwtSecurityToken jwtToken)
+                {
+                    var isAdminClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "IsAdmin");
+
+                    if (isAdminClaim != null && bool.TryParse(isAdminClaim.Value, out bool isAdmin))
+                    {
+                        return isAdmin;
+                    }
+                }
+
+                throw new ArgumentException("Invalid token: IsAdmin claim is missing or invalid");
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Token validation failed: " + ex.Message);
+            }
         }
     }
 }

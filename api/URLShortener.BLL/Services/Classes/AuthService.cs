@@ -34,7 +34,7 @@ namespace URLShortener.BLL.Services.Classes
             }
             var userModel = _mapper.Map<UserModel>(user);
 
-            var token = await _jwtService.GenerateToken(userModel);
+            var token = _jwtService.GenerateToken(userModel);
 
             return token;
         }
@@ -53,7 +53,7 @@ namespace URLShortener.BLL.Services.Classes
                                                                   
             var userModel = _mapper.Map<UserModel>(resultUser);
 
-            var token = await _jwtService.GenerateToken(userModel);
+            var token = _jwtService.GenerateToken(userModel);
             return token;
         }
     }

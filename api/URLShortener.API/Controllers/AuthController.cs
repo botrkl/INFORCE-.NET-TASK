@@ -45,7 +45,6 @@ namespace URLShortener.API.Controllers
             {
                 token = token,
             }));
-
         }
     }
 }

@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <tr>
+      <th>Original URL</th>
+      <th>Short URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let shortUrl of shortUrls">
+      <td>
+        <input type="hidden" [value]="shortUrl.id">
+        {{ shortUrl.originalUrl }}
+      </td>
+      <td>{{ shortUrl.shortUrl }}</td>
+      <td>
+        <button *ngIf="shortUrl.canBeDeleted" (click)="deleteShortUrl(shortUrl.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

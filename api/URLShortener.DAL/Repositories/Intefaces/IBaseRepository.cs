@@ -8,6 +8,6 @@ namespace URLShortener.DAL.Repositories.Intefaces
         Task<TEntity> AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(Guid id);
-        Task<IEnumerable<TEntity>?> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetAllAsync();
     }
 }

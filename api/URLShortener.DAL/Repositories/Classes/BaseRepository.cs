@@ -25,7 +25,7 @@ namespace URLShortener.DAL.Repositories.Classes
             _dbContext.Set<TEntity>().Remove(removeEntity);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<IEnumerable<TEntity>?> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             var result = await _dbContext.Set<TEntity>().ToListAsync();
             return result;

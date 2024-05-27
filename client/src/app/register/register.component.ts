@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { AuthService } from '../services/AuthService';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule,FormsModule,HttpClientModule],
+  imports: [HttpClientModule,CommonModule,FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
   providers: [AuthService]
@@ -28,9 +28,15 @@ export class RegisterComponent {
     }
 
     this.authService.register(this.username, this.password,this.confirmPassword)
-      .subscribe(response => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/']);
+    .subscribe(
+      (response: any) => {
+        if (response && response.value && response.value.token) {
+          const token = response.value.token;
+          localStorage.setItem('token', token);
+          this.router.navigate(['/urls']);
+        } else {
+          // catch exception
+        }
       }, error => {
         console.error('Registration failed', error);
         console.log('Error response text:', error.error);

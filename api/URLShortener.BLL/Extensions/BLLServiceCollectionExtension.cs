@@ -11,6 +11,7 @@ namespace URLShortener.BLL.Extensions
         {
             services.AddAutoMapper(typeof(UserMapperProfile));
 
+            services.AddScoped<IUrlAdressService, UrlAdressService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
