@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using URLShortener.BLL.Services.Intefaces;
 
 namespace URLShortener.API.Controllers
@@ -19,39 +20,60 @@ namespace URLShortener.API.Controllers
         [HttpGet("urls")]
         public async Task<IActionResult> FetchAllUrls()
         {
-            var authHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-            if (authHeader != null && authHeader.StartsWith("Bearer "))
+            var authHeader = HttpContext.Request.Headers.Authorization.ToString();
+
+            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
             {
-                var token = authHeader.Substring("Bearer ".Length).Trim();
-                if (_jwtService.CheckUserIsAdmin(token))
+                var token = authHeader["Bearer ".Length..].Trim();
+
+                if (token == "null")
                 {
-                    var list = await _urlAdressService.GetAllShortUrlModelsWithFlagAsync(isAdmin: true);
-                    return Ok(list);
+                    return Ok(await _urlAdressService.GetAllShortUrlModelsWithFlagAsync());
+                }
+                else if (_jwtService.CheckUserIsAdmin(token))
+                {
+                    return Ok(await _urlAdressService.GetAllShortUrlModelsWithFlagAsync(isAdmin: true));
                 }
                 else
                 {
                     var userId = _jwtService.GetUserIdFromJwtToken(token);
-                    var list = await _urlAdressService.GetAllShortUrlModelsWithFlagAsync(userId);
-                    return Ok(list);
+                    return Ok(await _urlAdressService.GetAllShortUrlModelsWithFlagAsync(userId));
                 }
             }
             else
             {
-                var list = await _urlAdressService.GetAllShortUrlModelsWithFlagAsync();
-                return Ok(list);
+                return Ok(await _urlAdressService.GetAllShortUrlModelsWithFlagAsync());
             }
         }
 
-        [HttpDelete("urls/{id:guid}")]
-        public async Task<IActionResult> RemoveUrl()
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> RemoveUrl([FromRoute] Guid id)
         {
-            return Ok();
+            await _urlAdressService.DeleteUrlAdressAsync(id);
+            return NoContent();
         }
 
-        [HttpPost("urls/add")]
-        public async Task<IActionResult> AddCard()
+        [HttpPost("add")]
+        public async Task<IActionResult> AddUrl([FromBody] string originalUrl)
         {
-            return Ok();
+            var authHeader = HttpContext.Request.Headers.Authorization.ToString();
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                return Unauthorized();
+
+            var token = authHeader["Bearer ".Length..].Trim();
+            var userId = _jwtService.GetUserIdFromJwtToken(token);
+
+            await _urlAdressService.AddUrlAdressAsync(originalUrl, userId);
+
+            return CreatedAtAction(nameof(InfoUrl), new { id = userId }, null);
+        }
+
+        [Authorize] 
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> InfoUrl([FromRoute] Guid id)
+        {
+            var urlModel = await _urlAdressService.GetUrlAdressByIdAsync(id);
+            return urlModel != null ? Ok(urlModel) : NotFound();
         }
     }
 }

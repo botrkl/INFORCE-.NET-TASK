@@ -10,6 +10,7 @@ namespace URLShortener.BLL.Extensions
         public static void InjectBLL(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(UserMapperProfile));
+            services.AddAutoMapper(typeof(UrlAdressMapperProfile));
 
             services.AddScoped<IUrlAdressService, UrlAdressService>();
             services.AddScoped<IAuthService, AuthService>();

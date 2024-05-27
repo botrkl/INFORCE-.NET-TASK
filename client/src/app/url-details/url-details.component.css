@@ -1,0 +1,32 @@
+.url-details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .detail-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .label {
+    font-weight: bold;
+    min-width: 120px;
+  }
+  
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  p {
+    text-align: center;
+  }
+  

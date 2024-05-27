@@ -35,7 +35,6 @@ export class RegisterComponent {
           localStorage.setItem('token', token);
           this.router.navigate(['/urls']);
         } else {
-          // catch exception
         }
       }, error => {
         console.error('Registration failed', error);

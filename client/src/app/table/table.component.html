@@ -1,3 +1,7 @@
+<div *ngIf="showInput" class="input-container">
+  <input type="text" #urlInput placeholder="Enter URL to shorten" class="input-field">
+  <button (click)="addShortUrl(urlInput.value)" class="submit-button">Submit</button>
+</div>
 <table>
   <thead>
     <tr>
@@ -7,11 +11,13 @@
   </thead>
   <tbody>
     <tr *ngFor="let shortUrl of shortUrls">
-      <td>
+      <td >
         <input type="hidden" [value]="shortUrl.id">
-        {{ shortUrl.originalUrl }}
+        <a (click)="goToUrlDetails(shortUrl.id)">{{ shortUrl.originalUrl }}</a>
       </td>
-      <td>{{ shortUrl.shortenedUrl }}</td>
+      <td (click)="goToUrlDetails(shortUrl.id)">
+        {{ shortUrl.shortenedUrl }}
+      </td>
       <td>
         <button *ngIf="shortUrl.canBeDeleted" (click)="deleteShortUrl(shortUrl.id)">Delete</button>
       </td>

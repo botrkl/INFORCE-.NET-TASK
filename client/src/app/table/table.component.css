@@ -26,3 +26,30 @@ tbody tr:hover {
 input[type="hidden"] {
   display: none;
 }
+
+.input-container {
+  display: flex;
+  align-items: center; 
+  margin: 10px;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.input-field {
+  flex-grow: 1; 
+  padding: 8px; 
+  border: 1px solid #ddd;
+}
+
+.submit-button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px; 
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
